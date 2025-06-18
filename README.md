@@ -92,7 +92,7 @@ This repository is configured with a GitHub Actions workflow (`.github/workflows
 1. Builds the Docker image from the `Dockerfile`.
 2. Pushes the image to GitHub Packages (ghcr.io) on every push to the `main` branch.
 
-The image will be tagged as `ghcr.io/yufeikang/netmon:main`.
+The image will be tagged as `ghcr.io/yufeikang/netmon:latest`.
 
 ## Contributing
 
