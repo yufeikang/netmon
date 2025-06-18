@@ -12,3 +12,4 @@ wheels/
 config.yaml
 config.yaml.example
 log/*
+*.log
