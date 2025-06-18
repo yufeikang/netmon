@@ -85,6 +85,49 @@ This project includes a `Dockerfile` to build a containerized version of the app
 
 The `docker-compose/` directory contains a `docker-compose.yaml` file to orchestrate the main application along with Prometheus for metrics collection and Grafana for visualization.
 
+## Using with Existing Prometheus and Grafana
+
+If you already have Prometheus and Grafana instances running, you can configure `netmon` to integrate with them.
+
+1. **Run the `netmon` Docker container:**
+
+    Pull the latest image from GitHub Container Registry and run it, exposing the metrics port (default `9105`):
+
+    ```bash
+    docker pull ghcr.io/yufeikang/netmon:latest
+    docker run -d --name netmon -p 9105:9105 ghcr.io/yufeikang/netmon:latest
+    ```
+
+    This will start `netmon` and expose its Prometheus metrics on `http://<your-docker-host-ip>:9105/metrics`.
+
+2. **Configure Prometheus to scrape `netmon` metrics:**
+
+    Add the following job to your `prometheus.yml` configuration file:
+
+    ```yaml
+    scrape_configs:
+      # ... your other scrape configs ...
+
+      - job_name: 'netmon'
+        static_configs:
+          - targets: ['<your-docker-host-ip>:9105'] # Replace <your-docker-host-ip> with the IP address of the machine running the netmon container
+    ```
+
+    If `netmon` is running on the same machine as Prometheus, you can often use `localhost:9105` or `host.docker.internal:9105` (depending on your Docker setup).
+    Reload your Prometheus configuration after making changes.
+
+3. **Import the Grafana Dashboard:**
+
+    The pre-configured Grafana dashboard for `netmon` is located at `docker-compose/grafana/provisioning/dashboards/netmon_dashboard.json`.
+    You can import this JSON file into your existing Grafana instance:
+    - Go to your Grafana UI.
+    - Navigate to "Dashboards" -> "Browse".
+    - Click on "Import".
+    - Upload the `netmon_dashboard.json` file or paste its content.
+    - Select your Prometheus data source when prompted.
+
+    This will provide you with the default `netmon` dashboard.
+
 ## GitHub Actions
 
 This repository is configured with a GitHub Actions workflow (`.github/workflows/deploy-docker.yml`) that automatically:
