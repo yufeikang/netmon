@@ -1,0 +1,42 @@
+# ────────────── 采样总间隔 (单位：秒 / seconds) ──────────────
+interval_sec: 10 # 采样间隔 sampling interval
+
+# ────────────── DNS 解析监控 (Domain Name System) ──────────────
+dns:
+  targets: # 需要解析的域名列表 domains to resolve
+    - www.google.com
+    - www.cloudflare.com
+  server: null # 指定 DNS 服务器；null=系统默认  custom DNS server
+  timeout: 3 # 解析超时 (秒)  DNS lookup timeout
+
+# ────────────── ICMP 连通性 (Ping) ──────────────
+icmp:
+  targets: # 要 Ping 的目标 IP / 域名  targets to ping
+    - 1.1.1.1
+    - 8.8.8.8
+  count: 4 # 单次发送数据包数量  packets per check
+  timeout: 2 # 单个 Ping 超时  ping timeout (sec)
+
+# ────────────── HTTP 可达性 (Web health check) ──────────────
+http:
+  targets:
+    - https://www.google.com/generate_204 # 204 用于快速检测
+  timeout: 5 # HTTP 请求超时  HTTP timeout (sec)
+
+# ────────────── 带宽测速 (Speedtest) ──────────────
+speedtest:
+  enabled: true # 是否启用测速 enable speedtest
+  interval_runs: 60 # 每执行多少次大循环跑一次测速 run every N cycles
+
+# ────────────── Wi‑Fi 链路质量 (Wi‑Fi link quality) ──────────────
+wifi:
+  enabled: false # 若容器无无线网卡可设为 false
+  interface: en0 # 无线接口名 Wi‑Fi interface name
+
+# ────────────── Prometheus 暴露端口 ──────────────
+prometheus:
+  port: 9105 # /metrics 暴露端口  Prometheus export port
+
+# ────────────── 日志设置 (Logging) ──────────────
+log_dir: /var/log/netmon # 日志目录 log directory
+log_level: INFO # 日志级别 logging level (DEBUG/INFO/WARN/ERROR)

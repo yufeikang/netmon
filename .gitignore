@@ -10,6 +10,6 @@ wheels/
 .venv
 
 config.yaml
-config.yaml.example
+
 log/*
 *.log
