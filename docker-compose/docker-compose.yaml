@@ -1,0 +1,36 @@
+services:
+  # ------------- Network Monitoring Script (netmon) -------------
+  netmon:
+    build: ..
+    container_name: netmon
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+      - ./log/netmon:/var/log/netmon
+    restart: unless-stopped
+
+  # ------------- Prometheus (Time Series Database) -------------
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    restart: unless-stopped
+
+  # ------------- Grafana (Visualization) -------------
+  grafana:
+    image: grafana/grafana:10.4.3
+    container_name: grafana
+    ports:
+      - "3000:3000" # Grafana Web interface port
+    volumes:
+      - grafana_data:/var/lib/grafana # Persist dashboards and settings
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=changeme # Initial login password, please change
+      - TZ=Asia/Tokyo
+    restart: unless-stopped
+
+volumes:
+  prometheus_data:
+  grafana_data:

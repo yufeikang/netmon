@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 15s # Scraping interval (default 1 minute can be reduced)
+
+scrape_configs:
+  - job_name: netmon
+    static_configs:
+      - targets: ["netmon:9105"] # Metrics port exposed by netmon

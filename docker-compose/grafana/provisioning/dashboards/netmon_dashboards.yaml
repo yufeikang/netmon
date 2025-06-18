@@ -1,0 +1,9 @@
+apiVersion: 1
+providers:
+- allowUiUpdates: true
+  folder: NetMon
+  name: NetMon
+  options:
+    path: /etc/grafana/provisioning/dashboards
+  orgId: 1
+  type: file
